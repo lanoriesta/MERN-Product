@@ -22,7 +22,11 @@ const Navbar = () => {
         <Link to={"/"}>
           <Flex alignItems={"center"} gap={4}>
             <FaOpencart color="#EA553C" size={50} />
-            <Heading color={useColorModeValue("#3B3B3B", "#faf9f6")}>
+            <Heading
+              color={useColorModeValue("#3B3B3B", "#faf9f6")}
+              fontWeight={"light"}
+              letterSpacing={3}
+            >
               Product App
             </Heading>
           </Flex>
