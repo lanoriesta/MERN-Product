@@ -25,7 +25,7 @@ const Navbar = () => {
             <Heading
               color={useColorModeValue("#3B3B3B", "#faf9f6")}
               fontWeight={"light"}
-              letterSpacing={3}
+              letterSpacing={5}
             >
               Product App
             </Heading>

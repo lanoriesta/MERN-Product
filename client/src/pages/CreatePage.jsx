@@ -7,11 +7,13 @@ import {
   Button,
   useColorModeValue,
   FormControl,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useProductStore } from "../store/products.js";
 
 const CreatePage = () => {
+  const toast = useToast();
   const { createProducts } = useProductStore();
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -23,8 +25,29 @@ const CreatePage = () => {
     e.preventDefault();
 
     const { success, message } = await createProducts(newProduct);
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-left",
+        variant: "left-accent",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-left",
+        variant: "left-accent",
+      });
+    }
 
-    setNewProduct({ ...newProduct, name: "", price: "", image: "" });
+    setNewProduct({ name: "", price: "", image: "" });
 
     console.log("Success:", success);
     console.log("Message:", message);
@@ -32,14 +55,21 @@ const CreatePage = () => {
 
   return (
     <Container maxW="xl" px={10} py={10}>
-      <Heading as={"h1"} textAlign={"center"}>
-        Create New Product
+      <Heading
+        as={"h1"}
+        fontSize={"2xl"}
+        textAlign={"center"}
+        textTransform={"uppercase"}
+        letterSpacing={10}
+      >
+        Create <span style={{ color: "#EA553C" }}>Product</span>
       </Heading>
       <Box
         my={5}
         p={8}
         rounded={"lg"}
-        bg={useColorModeValue("#F7F5F1", "hsl(0,0%,10%)")}
+        bg={useColorModeValue("rgba(238,238,238,.6)", "hsl(0,0%,10%)")}
+        boxShadow={"md"}
       >
         <form onSubmit={addProductHandler}>
           <FormControl isRequired>
@@ -84,6 +114,7 @@ const CreatePage = () => {
                 variant={"solid"}
                 my={3}
                 color={"white"}
+                boxShadow={"base"}
               >
                 Add Product
               </Button>
