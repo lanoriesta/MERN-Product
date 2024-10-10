@@ -6,11 +6,43 @@ import {
   Image,
   Text,
   useColorModeValue,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useProductStore } from "../store/products.js";
+import ModalUpdate from "./ModalUpdate.jsx";
 
 const ProductCard = ({ product }) => {
+  const { onOpen, isOpen, onClose } = useDisclosure();
+  const { deleteProduct } = useProductStore();
+  const toast = useToast();
+
+  const handleDeleteProduct = async (id) => {
+    const { success, message } = await deleteProduct(id);
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-left",
+        variant: "left-accent",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-left",
+        variant: "left-accent",
+      });
+    }
+  };
   return (
     <Box
       boxShadow={"md"}
@@ -46,6 +78,7 @@ const ProductCard = ({ product }) => {
       <Box boxShadow={"inner"}>
         <HStack spacing={0}>
           <IconButton
+            onClick={onOpen}
             boxShadow={"none"}
             borderRadius={"none"}
             icon={<EditIcon />}
@@ -56,17 +89,18 @@ const ProductCard = ({ product }) => {
             m={0}
           />
           <IconButton
+            onClick={() => handleDeleteProduct(product._id)}
             boxShadow={"none"}
             borderRadius={"none"}
             icon={<DeleteIcon />}
-            bg={"gray"}
+            bg={useColorModeValue("gray", "#2C2C2C")}
             color={"white"}
-            _hover={{ bg: "#737373" }}
             w={"full"}
             m={0}
           />
         </HStack>
       </Box>
+      <ModalUpdate isOpen={isOpen} onClose={onClose} productData={product} />
     </Box>
   );
 };
