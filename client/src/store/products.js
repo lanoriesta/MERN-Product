@@ -32,4 +32,19 @@ export const useProductStore = create((set) => ({
       console.log(error);
     }
   },
+  deleteProduct: async (id) => {
+    try {
+      const res = await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error({ success: false, message: res.message });
+
+      set((state) => ({
+        products: state.products.filter((item) => item._id !== id),
+      }));
+      return { success: true, message: "Successfuly deleted a product" };
+    } catch (err) {
+      console.log(err);
+    }
+  },
 }));
