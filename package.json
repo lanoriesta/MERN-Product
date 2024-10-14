@@ -1,10 +1,12 @@
 {
-  "name": "server",
+  "name": "mern-product",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "start": "cross-env NODE_ENV=production node server/server.js"
   },
   "type": "module",
   "keywords": [],
@@ -17,6 +19,7 @@
     "mongoose": "^8.7.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.7"
   }
 }
